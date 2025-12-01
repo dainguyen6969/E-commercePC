@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /trongdai
+
+spring:
+  datasource:
+    url: ${DBMS_CONNECTION:jdbc:mysql://localhost:3306/EcommercePC?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    username: ${DBMS_USERNAME:root}
+    password: ${DBMS_PASSWORD:root}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  signerKey: "iFmZsoXsVNPZfC+SqJ+B5esbt9PWchEqB8/Fn/qG26GPwvCY2m6loFrPETLRCeqh"
+  valid-duration: 3600 # in second
+  refreshable-duration: 360000 # in seconds
