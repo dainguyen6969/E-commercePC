@@ -1,7 +1,9 @@
 package com.dainguyen.E_commercePC.entity.cart;
 
-import com.dainguyen.E_commercePC.entity.product.SanPham;
 import jakarta.persistence.*;
+
+import com.dainguyen.E_commercePC.entity.product.SanPham;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -26,5 +28,4 @@ public class ChiTietGioHang {
     @ManyToOne
     @JoinColumn(name = "san_pham_id", referencedColumnName = "id")
     SanPham sanPhamId;
-
 }

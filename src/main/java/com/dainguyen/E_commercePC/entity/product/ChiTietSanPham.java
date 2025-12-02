@@ -1,6 +1,7 @@
 package com.dainguyen.E_commercePC.entity.product;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,5 +24,4 @@ public class ChiTietSanPham {
     @OneToOne
     @JoinColumn(name = "san_pham_id", referencedColumnName = "id")
     SanPham sanPhamId;
-
 }
