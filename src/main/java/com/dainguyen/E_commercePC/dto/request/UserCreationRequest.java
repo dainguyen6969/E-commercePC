@@ -1,9 +1,9 @@
-package com.dainguyen.E_commercePC.entity.user;
+package com.dainguyen.E_commercePC.dto.request;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import jakarta.persistence.*;
+import com.dainguyen.E_commercePC.entity.user.DiaChi;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,12 +11,9 @@ import lombok.experimental.FieldDefaults;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserCreationRequest {
     Integer id;
 
     String username;
@@ -26,15 +23,8 @@ public class User {
     String phone;
     Boolean status;
 
-    @Column(name = "created_at")
     LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
-    @OneToMany
     Set<DiaChi> diaChi;
-
-    @ManyToMany
-    Set<Role> role;
 }
