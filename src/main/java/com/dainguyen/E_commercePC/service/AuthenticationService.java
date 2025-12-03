@@ -1,9 +1,15 @@
-package dainguyen.E_commercePC.service;
+package com.dainguyen.E_commercePC.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+import com.dainguyen.E_commercePC.dto.request.AuthenticationRequest;
+import com.dainguyen.E_commercePC.dto.response.AuthenticationResponse;
+import com.dainguyen.E_commercePC.entity.user.User;
+import com.dainguyen.E_commercePC.exception.AppException;
+import com.dainguyen.E_commercePC.exception.ErrorCode;
+import com.dainguyen.E_commercePC.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,12 +18,6 @@ import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 
-import dainguyen.E_commercePC.dto.request.AuthenticationRequest;
-import dainguyen.E_commercePC.dto.response.AuthenticationResponse;
-import dainguyen.E_commercePC.entity.user.User;
-import dainguyen.E_commercePC.exception.AppException;
-import dainguyen.E_commercePC.exception.ErrorCode;
-import dainguyen.E_commercePC.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -1,4 +1,4 @@
-package dainguyen.E_commercePC.entity.product;
+package com.dainguyen.E_commercePC.entity.product;
 
 import jakarta.persistence.*;
 

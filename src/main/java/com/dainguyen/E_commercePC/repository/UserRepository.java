@@ -1,11 +1,10 @@
-package dainguyen.E_commercePC.repository;
+package com.dainguyen.E_commercePC.repository;
 
 import java.util.Optional;
 
+import com.dainguyen.E_commercePC.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import dainguyen.E_commercePC.entity.user.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {

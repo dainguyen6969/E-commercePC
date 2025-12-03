@@ -1,4 +1,4 @@
-package dainguyen.E_commercePC.dto.response;
+package com.dainguyen.E_commercePC.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

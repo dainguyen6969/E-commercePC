@@ -1,4 +1,4 @@
-package dainguyen.E_commercePC.configuration;
+package com.dainguyen.E_commercePC.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

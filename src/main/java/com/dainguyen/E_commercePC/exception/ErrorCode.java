@@ -1,4 +1,4 @@
-package dainguyen.E_commercePC.exception;
+package com.dainguyen.E_commercePC.exception;
 
 import org.springframework.http.HttpStatus;
 

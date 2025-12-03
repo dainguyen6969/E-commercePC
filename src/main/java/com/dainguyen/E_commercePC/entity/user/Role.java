@@ -1,4 +1,4 @@
-package dainguyen.E_commercePC.entity.user;
+package com.dainguyen.E_commercePC.entity.user;
 
 import java.util.Set;
 

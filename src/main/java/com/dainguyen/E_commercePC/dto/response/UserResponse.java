@@ -1,9 +1,9 @@
-package dainguyen.E_commercePC.dto.response;
+package com.dainguyen.E_commercePC.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import dainguyen.E_commercePC.entity.user.DiaChi;
+import com.dainguyen.E_commercePC.entity.user.DiaChi;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

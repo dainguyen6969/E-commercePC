@@ -1,4 +1,4 @@
-package dainguyen.E_commercePC.constant;
+package com.dainguyen.E_commercePC.constant;
 
 public class PredefinedRole {
     public static final String USER_ROLE = "USER";

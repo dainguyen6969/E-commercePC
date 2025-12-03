@@ -1,4 +1,4 @@
-package dainguyen.E_commercePC.exception;
+package com.dainguyen.E_commercePC.exception;
 
 public class AppException extends RuntimeException {
     private ErrorCode errorCode;

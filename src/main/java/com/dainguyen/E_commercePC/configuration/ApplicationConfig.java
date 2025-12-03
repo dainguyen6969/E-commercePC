@@ -1,7 +1,12 @@
-package dainguyen.E_commercePC.configuration;
+package com.dainguyen.E_commercePC.configuration;
 
 import java.util.HashSet;
 
+import com.dainguyen.E_commercePC.constant.PredefinedRole;
+import com.dainguyen.E_commercePC.entity.user.Role;
+import com.dainguyen.E_commercePC.entity.user.User;
+import com.dainguyen.E_commercePC.repository.RoleRepository;
+import com.dainguyen.E_commercePC.repository.UserRepository;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
