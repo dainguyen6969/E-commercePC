@@ -1,4 +1,4 @@
-package com.dainguyen.E_commercePC.entity.order;
+package dainguyen.E_commercePC.entity.order;
 
 import java.time.LocalDateTime;
 

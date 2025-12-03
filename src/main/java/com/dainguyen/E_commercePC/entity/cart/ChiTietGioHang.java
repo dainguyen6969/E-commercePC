@@ -1,9 +1,8 @@
-package com.dainguyen.E_commercePC.entity.cart;
+package dainguyen.E_commercePC.entity.cart;
 
 import jakarta.persistence.*;
 
-import com.dainguyen.E_commercePC.entity.product.SanPham;
-
+import dainguyen.E_commercePC.entity.product.SanPham;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

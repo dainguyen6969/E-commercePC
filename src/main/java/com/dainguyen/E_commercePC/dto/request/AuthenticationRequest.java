@@ -1,4 +1,4 @@
-package dainguyen.E_commercePC.dto.response;
+package dainguyen.E_commercePC.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,9 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionResponse {
-    Integer id;
-
-    String permissionName;
-    String description;
+public class AuthenticationRequest {
+    String username;
+    String password;
 }

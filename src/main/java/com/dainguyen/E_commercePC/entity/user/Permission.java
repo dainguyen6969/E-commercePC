@@ -1,4 +1,4 @@
-package com.dainguyen.E_commercePC.entity.user;
+package dainguyen.E_commercePC.entity.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

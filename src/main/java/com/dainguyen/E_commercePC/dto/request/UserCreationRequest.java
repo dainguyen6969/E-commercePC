@@ -3,8 +3,6 @@ package com.dainguyen.E_commercePC.dto.request;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import com.dainguyen.E_commercePC.entity.user.DiaChi;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -26,5 +24,5 @@ public class UserCreationRequest {
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
-    Set<DiaChi> diaChi;
+    Set<dainguyen.E_commercePC.entity.user.DiaChi> diaChi;
 }

@@ -8,9 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionResponse {
-    Integer id;
-
-    String permissionName;
-    String description;
+public class AuthenticationResponse {
+    String token;
+    boolean valid;
 }

@@ -1,4 +1,4 @@
-package com.dainguyen.E_commercePC;
+package dainguyen.E_commercePC;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.dainguyen.E_commercePC.service;
+package dainguyen.E_commercePC.service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.dainguyen.E_commercePC.dto.request.RoleRequest;
-import com.dainguyen.E_commercePC.dto.response.RoleResponse;
-import com.dainguyen.E_commercePC.mapper.RoleMapper;
-import com.dainguyen.E_commercePC.repository.PermissionRepository;
-import com.dainguyen.E_commercePC.repository.RoleRepository;
 
+import dainguyen.E_commercePC.dto.response.RoleResponse;
+import dainguyen.E_commercePC.mapper.RoleMapper;
+import dainguyen.E_commercePC.repository.PermissionRepository;
+import dainguyen.E_commercePC.repository.RoleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
