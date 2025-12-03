@@ -10,6 +10,11 @@ spring:
     username: ${DBMS_USERNAME:root}
     password: ${DBMS_PASSWORD:123456}
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 jwt:
   signerKey: "iFmZsoXsVNPZfC+SqJ+B5esbt9PWchEqB8/Fn/qG26GPwvCY2m6loFrPETLRCeqh"
   valid-duration: 3600 # in second
