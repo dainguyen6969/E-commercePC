@@ -1,11 +1,10 @@
 package com.dainguyen.E_commercePC.mapper;
 
-import com.dainguyen.E_commercePC.dto.response.UserResponse;
-import com.dainguyen.E_commercePC.entity.user.User;
 import org.mapstruct.Mapper;
 
 import com.dainguyen.E_commercePC.dto.request.UserCreationRequest;
-
+import com.dainguyen.E_commercePC.dto.response.UserResponse;
+import com.dainguyen.E_commercePC.entity.user.User;
 
 @Mapper(componentModel = "Spring")
 public interface UserMapper {

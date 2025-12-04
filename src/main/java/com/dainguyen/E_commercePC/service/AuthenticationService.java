@@ -1,22 +1,27 @@
 package com.dainguyen.E_commercePC.service;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-import com.dainguyen.E_commercePC.dto.request.AuthenticationRequest;
-import com.dainguyen.E_commercePC.dto.response.AuthenticationResponse;
-import com.dainguyen.E_commercePC.entity.user.User;
-import com.dainguyen.E_commercePC.exception.AppException;
-import com.dainguyen.E_commercePC.exception.ErrorCode;
-import com.dainguyen.E_commercePC.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dainguyen.E_commercePC.dto.request.AuthenticationRequest;
+import com.dainguyen.E_commercePC.dto.request.IntrospectRequest;
+import com.dainguyen.E_commercePC.dto.response.AuthenticationResponse;
+import com.dainguyen.E_commercePC.dto.response.IntrospectResponse;
+import com.dainguyen.E_commercePC.entity.user.User;
+import com.dainguyen.E_commercePC.exception.AppException;
+import com.dainguyen.E_commercePC.exception.ErrorCode;
+import com.dainguyen.E_commercePC.repository.UserRepository;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +50,20 @@ public class AuthenticationService {
     @Value("${jwt.valid-duration}")
     protected Integer VALIDATION_DURATION;
 
+    public IntrospectResponse introspect(IntrospectRequest introspectRequest) throws JOSEException, ParseException {
+        var token = introspectRequest.getToken();
+
+        boolean isValid = true;
+
+        try {
+            verifyToken(token, false);
+        } catch (AppException e) {
+            isValid = false;
+        }
+
+        return IntrospectResponse.builder().valid(isValid).build();
+    }
+
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         var user = userRepository
                 .findByUsername(authenticationRequest.getUsername())
@@ -60,7 +79,7 @@ public class AuthenticationService {
     }
 
     private String generateToken(User user) {
-        JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
@@ -82,5 +101,26 @@ public class AuthenticationService {
             log.error("Cannot create token", exception);
             throw new RuntimeException(exception);
         }
+    }
+
+    private SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {
+        JWSVerifier jwsVerifier = new MACVerifier(SIGNER_KEY.getBytes());
+
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+        Date expiryTime = (isRefresh)
+                ? new Date(signedJWT
+                        .getJWTClaimsSet()
+                        .getIssueTime()
+                        .toInstant()
+                        .plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS)
+                        .toEpochMilli())
+                : signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        var verifiedJWT = signedJWT.verify(jwsVerifier);
+
+        if (!(verifiedJWT && expiryTime.after(new Date()))) throw new AppException(ErrorCode.UNAUTHORIZED);
+
+        return signedJWT;
     }
 }

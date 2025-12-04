@@ -1,12 +1,11 @@
 package com.dainguyen.E_commercePC.mapper;
 
-import com.dainguyen.E_commercePC.dto.response.RoleResponse;
-import com.dainguyen.E_commercePC.entity.user.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.dainguyen.E_commercePC.dto.request.RoleRequest;
-
+import com.dainguyen.E_commercePC.dto.response.RoleResponse;
+import com.dainguyen.E_commercePC.entity.user.Role;
 
 @Mapper(componentModel = "spring")
 public interface RoleMapper {

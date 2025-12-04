@@ -1,10 +1,10 @@
 package com.dainguyen.E_commercePC.mapper;
 
+import org.mapstruct.Mapper;
+
 import com.dainguyen.E_commercePC.dto.request.PermissionRequest;
 import com.dainguyen.E_commercePC.dto.response.PermissionResponse;
 import com.dainguyen.E_commercePC.entity.user.Permission;
-import org.mapstruct.Mapper;
-
 
 @Mapper(componentModel = "spring")
 public interface PermissionMapper {

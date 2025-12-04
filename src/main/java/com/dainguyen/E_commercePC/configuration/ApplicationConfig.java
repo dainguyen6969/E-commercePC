@@ -2,15 +2,16 @@ package com.dainguyen.E_commercePC.configuration;
 
 import java.util.HashSet;
 
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.dainguyen.E_commercePC.constant.PredefinedRole;
 import com.dainguyen.E_commercePC.entity.user.Role;
 import com.dainguyen.E_commercePC.entity.user.User;
 import com.dainguyen.E_commercePC.repository.RoleRepository;
 import com.dainguyen.E_commercePC.repository.UserRepository;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class ApplicationConfig {
 
                 User user = User.builder()
                         .username(admin)
-                        .password(admin)
+                        .password(passwordEncoder.encode(admin))
                         .role(hashSetRole)
                         .build();
 
