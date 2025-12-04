@@ -1,26 +1,26 @@
 package com.dainguyen.E_commercePC.service;
 
-import com.dainguyen.E_commercePC.constant.PredefinedRole;
-import com.dainguyen.E_commercePC.entity.user.Role;
-import com.dainguyen.E_commercePC.exception.AppException;
-import com.dainguyen.E_commercePC.exception.ErrorCode;
-import com.dainguyen.E_commercePC.repository.RoleRepository;
+import java.util.HashSet;
+import java.util.List;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dainguyen.E_commercePC.constant.PredefinedRole;
 import com.dainguyen.E_commercePC.dto.request.UserCreationRequest;
 import com.dainguyen.E_commercePC.dto.response.UserResponse;
+import com.dainguyen.E_commercePC.entity.user.Role;
 import com.dainguyen.E_commercePC.entity.user.User;
+import com.dainguyen.E_commercePC.exception.AppException;
+import com.dainguyen.E_commercePC.exception.ErrorCode;
 import com.dainguyen.E_commercePC.mapper.UserMapper;
+import com.dainguyen.E_commercePC.repository.RoleRepository;
 import com.dainguyen.E_commercePC.repository.UserRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
-import java.util.HashSet;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
