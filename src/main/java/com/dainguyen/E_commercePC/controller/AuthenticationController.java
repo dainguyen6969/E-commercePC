@@ -1,9 +1,9 @@
 package com.dainguyen.E_commercePC.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.dainguyen.E_commercePC.dto.request.AuthenticationRequest;
 import com.dainguyen.E_commercePC.dto.response.ApiResponse;
@@ -13,7 +13,6 @@ import com.dainguyen.E_commercePC.service.AuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")

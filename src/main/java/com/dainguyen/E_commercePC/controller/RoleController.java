@@ -2,7 +2,6 @@ package com.dainguyen.E_commercePC.controller;
 
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.dainguyen.E_commercePC.dto.request.RoleRequest;
