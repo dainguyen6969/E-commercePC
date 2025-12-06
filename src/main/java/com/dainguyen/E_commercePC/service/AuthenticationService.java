@@ -3,7 +3,8 @@ package com.dainguyen.E_commercePC.service;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 @Slf4j
 @Service
@@ -50,25 +53,48 @@ public class AuthenticationService {
     @Value("${jwt.valid-duration}")
     protected Integer VALIDATION_DURATION;
 
+
     public IntrospectResponse introspect(IntrospectRequest introspectRequest) throws JOSEException, ParseException {
         var token = introspectRequest.getToken();
-
         boolean isValid = true;
+        SignedJWT signedJWT = null;
 
         try {
-            verifyToken(token, false);
+            signedJWT = verifyToken(token, false);
         } catch (AppException e) {
             isValid = false;
         }
 
-        return IntrospectResponse.builder().valid(isValid).build();
+        // Lấy quyền (roles) trực tiếp từ claim "scope" trong JWT
+        Set<String> roles = Collections.emptySet();
+        if (isValid && signedJWT != null) {
+            try {
+                // Claim "scope" chứa tất cả Roles và Permissions, cần lọc ra chỉ Roles (có tiền tố ROLE_)
+                String scopeClaim = signedJWT.getJWTClaimsSet().getStringClaim("scope");
+                if (scopeClaim != null && !scopeClaim.isEmpty()) {
+                    roles = Arrays.stream(scopeClaim.split(" "))
+                            .filter(claim -> claim.startsWith("ROLE_")) // Lọc ra chỉ các Role
+                            .collect(Collectors.toSet());
+                }
+            } catch (Exception e) {
+                log.error("Error extracting scope claim from JWT during introspect.", e);
+                isValid = false;
+            }
+        }
+
+        // Trả về kết quả, bao gồm cả roles
+        return IntrospectResponse.builder()
+                .valid(isValid)
+                .roles(roles) // Trả về vai trò đã trích xuất từ token
+                .build();
     }
 
+    @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         var user = userRepository
                 .findByUsername(authenticationRequest.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-
+        log.info("Roles count: {}", user.getRoles().size());
         boolean authenticated = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
 
         if (!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
@@ -85,9 +111,8 @@ public class AuthenticationService {
                 .subject(user.getUsername())
                 .issuer("Nguyen Trong Dai")
                 .issueTime(new Date())
-                .expirationTime(new Date(Instant.now()
-                        .plus(VALIDATION_DURATION, ChronoUnit.SECONDS)
-                        .toEpochMilli()))
+                .expirationTime(Date.from(Instant.now().plusSeconds(VALIDATION_DURATION)))
+                .claim("scope", buildScope(user))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -122,5 +147,22 @@ public class AuthenticationService {
         if (!(verifiedJWT && expiryTime.after(new Date()))) throw new AppException(ErrorCode.UNAUTHORIZED);
 
         return signedJWT;
+    }
+
+    private String buildScope(User user) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if(!CollectionUtils.isEmpty(user.getRoles())) {
+            user.getRoles().forEach(role -> {
+                stringJoiner.add("ROLE_" + role.getRoleName());
+                if(!CollectionUtils.isEmpty(role.getPermission())) {
+                    role.getPermission().forEach(permission -> {
+                        stringJoiner.add(permission.getPermissionName());
+                    });
+                }
+            });
+        }
+
+        log.info(user.getRoles().toString());
+        return stringJoiner.toString();
     }
 }
