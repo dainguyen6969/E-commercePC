@@ -3,6 +3,7 @@ package com.dainguyen.E_commercePC.service;
 import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.dainguyen.E_commercePC.dto.request.RoleRequest;
@@ -34,6 +35,7 @@ public class RoleService {
         return roleMapper.toRoleResponse(role);
     }
 
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<RoleResponse> getAllRoles() {
         return roleRepository.findAll().stream().map(roleMapper::toRoleResponse).toList();
     }

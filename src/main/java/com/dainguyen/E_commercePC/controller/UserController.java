@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    UserService userService;
+    final UserService userService;
 
     @PostMapping
     public ApiResponse<UserResponse> createUser(@RequestBody UserCreationRequest userCreationRequest) {
