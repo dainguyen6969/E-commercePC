@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoleController {
-    RoleService roleService;
+    final RoleService roleService;
 
     @PostMapping
     public ApiResponse<RoleResponse> createRole(@RequestBody RoleRequest roleRequest) {

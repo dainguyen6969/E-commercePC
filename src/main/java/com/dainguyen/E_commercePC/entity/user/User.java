@@ -36,5 +36,5 @@ public class User {
     Set<DiaChi> diaChi;
 
     @ManyToMany
-    Set<Role> role;
+    Set<Role> roles;
 }

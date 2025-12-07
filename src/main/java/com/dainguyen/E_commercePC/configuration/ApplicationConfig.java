@@ -45,7 +45,7 @@ public class ApplicationConfig {
                 User user = User.builder()
                         .username(admin)
                         .password(passwordEncoder.encode(admin))
-                        .role(hashSetRole)
+                        .roles(hashSetRole)
                         .build();
 
                 userRepository.save(user);

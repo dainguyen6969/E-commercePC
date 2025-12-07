@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.Objects;
 import javax.crypto.spec.SecretKeySpec;
 
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -16,37 +18,26 @@ import com.dainguyen.E_commercePC.dto.request.IntrospectRequest;
 import com.dainguyen.E_commercePC.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 
-import lombok.RequiredArgsConstructor;
-
 @Component
-@RequiredArgsConstructor
 public class CustomJWTDecode implements JwtDecoder {
     @Value("${jwt.signerKey}")
     private String jwtSignerKey;
 
-    private AuthenticationService authenticationService;
+    private NimbusJwtDecoder nimbus;
 
-    private NimbusJwtDecoder nimbusJwtDecoder = null;
+    @PostConstruct
+    void init() {
+        SecretKeySpec key = new SecretKeySpec(jwtSignerKey.getBytes(), "HmacSHA512");
+        nimbus = NimbusJwtDecoder.withSecretKey(key)
+                .macAlgorithm(MacAlgorithm.HS512)
+                .build();
+    }
 
+    @Override
     public Jwt decode(String token) throws JwtException {
-        try {
-            var request = authenticationService.introspect(
-                    IntrospectRequest.builder().token(token).build());
-
-            if (!request.isValid()) {
-                throw new JwtException("Token is invalid");
-            }
-        } catch (JOSEException | ParseException e) {
-            throw new JwtException(e.getMessage());
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
         }
-
-        if (Objects.isNull(nimbusJwtDecoder)) {
-            SecretKeySpec secretKeySpec = new SecretKeySpec(jwtSignerKey.getBytes(), "HS512");
-            nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
-                    .macAlgorithm(MacAlgorithm.HS512)
-                    .build();
-        }
-
-        return nimbusJwtDecoder.decode(token);
+        return nimbus.decode(token);
     }
 }

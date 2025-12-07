@@ -1,9 +1,12 @@
 package com.dainguyen.E_commercePC.service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +41,10 @@ public class UserService {
         HashSet<Role> roles = new HashSet<>();
         roleRepository.findByRoleName(PredefinedRole.USER_ROLE).ifPresent(roles::add);
 
-        user.setRole(roles);
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        user.setCreatedAt(dateTime);
+        user.setRoles(roles);
         try {
             userRepository.save(user);
         } catch (DataIntegrityViolationException exception) {
@@ -48,6 +54,7 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    //    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUser() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }

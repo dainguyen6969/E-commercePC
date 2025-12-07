@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.dainguyen.E_commercePC.entity.user.DiaChi;
 
+import com.dainguyen.E_commercePC.entity.user.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -27,4 +28,7 @@ public class UserResponse {
     LocalDateTime updatedAt;
 
     Set<DiaChi> diaChi;
+
+    Set<RoleResponse> role;
+
 }
