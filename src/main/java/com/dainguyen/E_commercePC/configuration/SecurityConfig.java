@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -14,22 +15,30 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Value("${jwt.signerKey}")
     private String jwtSignerKey;
 
-    private static final String[] PUBLIC_ENTRYPOINT = {"/users", "/auth/token"};
+    private static final String[] PUBLIC_ENTRYPOINT_POST = {"/users", "/auth/token","/auth/introspect", "/roles"};
+    private static final String[] PUBLIC_ENTRYPOINT_GET = {"/categories", "/products", "/static/**"};
 
     private final CustomJWTDecode customJWTDecode;
 
+    public SecurityConfig(CustomJWTDecode customJWTDecode) {
+        this.customJWTDecode = customJWTDecode;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, PUBLIC_ENTRYPOINT)
+        httpSecurity.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET, PUBLIC_ENTRYPOINT_GET).permitAll().requestMatchers(HttpMethod.POST, PUBLIC_ENTRYPOINT_POST)
                 .permitAll()
                 .anyRequest()
                 .authenticated());
@@ -56,5 +65,19 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+
+        return new CorsFilter(urlBasedCorsConfigurationSource);
     }
 }

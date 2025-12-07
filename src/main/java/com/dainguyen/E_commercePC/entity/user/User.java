@@ -19,7 +19,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Column(unique = true)
     String username;
+
     String password;
     String email;
     String fullName;
@@ -36,5 +38,5 @@ public class User {
     Set<DiaChi> diaChi;
 
     @ManyToMany
-    Set<Role> role;
+    Set<Role> roles;
 }

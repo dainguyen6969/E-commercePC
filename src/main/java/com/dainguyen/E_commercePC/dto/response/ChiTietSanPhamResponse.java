@@ -1,19 +1,15 @@
-package com.dainguyen.E_commercePC.entity.product;
+package com.dainguyen.E_commercePC.dto.response;
 
-import jakarta.persistence.*;
-
+import com.dainguyen.E_commercePC.entity.product.SanPham;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChiTietSanPham {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ChiTietSanPhamResponse {
     Integer id;
 
     String moTa;
@@ -21,8 +17,5 @@ public class ChiTietSanPham {
     String giaTri;
     Integer soLuong;
 
-
-    @OneToOne
-    @JoinColumn(name = "san_pham_id", referencedColumnName = "id")
     SanPham sanPhamId;
 }

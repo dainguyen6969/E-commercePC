@@ -22,6 +22,9 @@ public class SanPham {
     Double gia;
     String anh;
 
+    String moTa;
+    Integer soLuong;
+
     @Column(name = "created_at")
     LocalDateTime createdAt;
 

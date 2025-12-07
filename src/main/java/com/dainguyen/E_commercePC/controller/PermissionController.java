@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionController {
-    PermissionService permissionService;
+    final PermissionService permissionService;
 
     @PostMapping
     public ApiResponse<PermissionResponse> createPermission(@RequestBody PermissionRequest permissionRequest) {

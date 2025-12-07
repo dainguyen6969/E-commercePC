@@ -2,6 +2,7 @@ package com.dainguyen.E_commercePC.entity.user;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -12,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Entity
 @Builder
+@Table(name = "role")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
     @Id
@@ -21,6 +23,6 @@ public class Role {
     String roleName;
     String description;
 
-    @OneToMany
+    @ManyToMany
     Set<Permission> permission;
 }
