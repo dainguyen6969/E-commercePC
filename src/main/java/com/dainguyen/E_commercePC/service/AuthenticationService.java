@@ -94,7 +94,6 @@ public class AuthenticationService {
         var user = userRepository
                 .findByUsername(authenticationRequest.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        log.info("Roles count: {}", user.getRoles().size());
         boolean authenticated = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
 
         if (!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);

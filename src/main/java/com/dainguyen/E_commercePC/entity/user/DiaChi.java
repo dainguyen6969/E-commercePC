@@ -1,9 +1,6 @@
 package com.dainguyen.E_commercePC.entity.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,4 +19,9 @@ public class DiaChi {
     String thanhPho;
     String xaPhuong;
     String diaChiHienTai;
+    String phone;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    User user;
 }

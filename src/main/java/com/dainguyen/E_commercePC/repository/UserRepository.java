@@ -10,6 +10,15 @@ import com.dainguyen.E_commercePC.entity.user.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("SELECT DISTINCT u FROM User u JOIN FETCH u.roles WHERE u.username = :username")
+    @Query("SELECT DISTINCT u FROM User u "
+            + "LEFT JOIN FETCH u.roles r "
+            + "LEFT JOIN FETCH u.diaChi d "
+            + "WHERE u.username = :username")
     Optional<User> findByUsername(String username);
+
+    @Query("SELECT DISTINCT u FROM User u "
+            + "LEFT JOIN FETCH u.roles r "
+            + "LEFT JOIN FETCH u.diaChi d "
+            + "WHERE u.username = :username")
+    Optional<User> findByUsernameWithDetails(String username);
 }

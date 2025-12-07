@@ -3,6 +3,9 @@ package com.dainguyen.E_commercePC.entity.user;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.dainguyen.E_commercePC.entity.cart.GioHang;
+import com.dainguyen.E_commercePC.entity.order.ChiTietDonHang;
+import com.dainguyen.E_commercePC.entity.order.DonHang;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -19,13 +22,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(unique = true)
     String username;
-
     String password;
     String email;
     String fullName;
-    String phone;
     Boolean status;
 
     @Column(name = "created_at")
@@ -39,4 +39,10 @@ public class User {
 
     @ManyToMany
     Set<Role> roles;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    GioHang gioHang;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    Set<DonHang> donHangs;
 }

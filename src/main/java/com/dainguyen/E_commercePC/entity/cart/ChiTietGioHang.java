@@ -19,13 +19,15 @@ public class ChiTietGioHang {
     Integer id;
 
     Integer soLuong;
+
+    // giá tại thời điểm thêm giỏ
     Double gia;
 
-    @OneToOne
-    @JoinColumn(name = "gio_hang_id", referencedColumnName = "id")
-    GioHang gioHangId;
+    @ManyToOne
+    @JoinColumn(name = "gio_hang", nullable = false)
+    GioHang gioHang;
 
     @ManyToOne
-    @JoinColumn(name = "san_pham_id", referencedColumnName = "id")
-    SanPham sanPhamId;
+    @JoinColumn(name = "san_pham_id", nullable = false)
+    SanPham sanPham;
 }
