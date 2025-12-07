@@ -31,7 +31,7 @@ public class SanPham {
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "danh_muc_id", referencedColumnName = "id")
     DanhMuc danhMucId;
 }

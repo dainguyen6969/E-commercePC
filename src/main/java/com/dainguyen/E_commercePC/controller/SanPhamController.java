@@ -35,6 +35,24 @@ public class SanPhamController {
                 .build();
     }
 
+    // *** ENDPOINT MỚI: Lấy chi tiết 1 sản phẩm theo ID ***
+    @GetMapping("/{productId}")
+    public ApiResponse<SanPhamResponse> getProductDetail(@PathVariable Integer productId) {
+        return ApiResponse.<SanPhamResponse>builder()
+                .result(sanPhamService.getProductById(productId))
+                .build();
+    }
+
+    // *** ENDPOINT MỚI: Lấy sản phẩm liên quan theo Danh mục ***
+    @GetMapping("/related/{danhMucId}/{excludedProductId}")
+    public ApiResponse<List<SanPhamResponse>> getRelatedProducts(
+            @PathVariable Integer danhMucId,
+            @PathVariable Integer excludedProductId) {
+        return ApiResponse.<List<SanPhamResponse>>builder()
+                .result(sanPhamService.getRelatedProducts(danhMucId, excludedProductId))
+                .build();
+    }
+
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<Void> deleteProduct(@PathVariable Integer productId) {

@@ -28,7 +28,7 @@ public class SecurityConfig {
     private String jwtSignerKey;
 
     private static final String[] PUBLIC_ENTRYPOINT_POST = {"/users", "/auth/token","/auth/introspect", "/roles"};
-    private static final String[] PUBLIC_ENTRYPOINT_GET = {"/categories", "/products", "/static/**"};
+    private static final String[] PUBLIC_ENTRYPOINT_GET = {"/categories", "/products/**", "/static/**"};
 
     private final CustomJWTDecode customJWTDecode;
 
