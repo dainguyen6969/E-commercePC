@@ -2,6 +2,7 @@ package com.dainguyen.E_commercePC.mapper;
 
 import com.dainguyen.E_commercePC.dto.request.SanPhamRequest;
 import com.dainguyen.E_commercePC.dto.response.SanPhamResponse;
+import com.dainguyen.E_commercePC.entity.product.ChiTietSanPham;
 import com.dainguyen.E_commercePC.entity.product.SanPham;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

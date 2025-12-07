@@ -7,6 +7,7 @@ import com.dainguyen.E_commercePC.service.SanPhamService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class SanPhamController {
     final SanPhamService sanPhamService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ApiResponse<SanPhamResponse> createSanPham(@RequestBody SanPhamRequest sanPhamRequest) {
         return ApiResponse.<SanPhamResponse>builder()
@@ -25,10 +27,20 @@ public class SanPhamController {
                 .build();
     }
 
+
     @GetMapping
     public ApiResponse<List<SanPhamResponse>> getAllSanPham() {
         return ApiResponse.<List<SanPhamResponse>>builder()
                 .result(sanPhamService.getAllSanPham())
+                .build();
+    }
+
+    @DeleteMapping("/{productId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<Void> deleteProduct(@PathVariable Integer productId) {
+        sanPhamService.deleteProduct(productId);
+        return ApiResponse.<Void>builder()
+                .message("Xóa sản phẩm thành công")
                 .build();
     }
 }

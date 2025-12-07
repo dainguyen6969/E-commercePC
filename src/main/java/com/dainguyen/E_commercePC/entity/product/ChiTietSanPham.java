@@ -21,6 +21,7 @@ public class ChiTietSanPham {
     String giaTri;
     Integer soLuong;
 
+
     @OneToOne
     @JoinColumn(name = "san_pham_id", referencedColumnName = "id")
     SanPham sanPhamId;

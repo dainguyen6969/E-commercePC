@@ -17,6 +17,8 @@ public class SanPhamRequest {
     String ten;
     Double gia;
     String anh;
+    String moTa;
+    Integer soLuong;
 
     LocalDateTime createdAt;
 

@@ -27,7 +27,7 @@ public class SecurityConfig {
     @Value("${jwt.signerKey}")
     private String jwtSignerKey;
 
-    private static final String[] PUBLIC_ENTRYPOINT_POST = {"/users", "/auth/token","/auth/introspect", "/roles", "/products"};
+    private static final String[] PUBLIC_ENTRYPOINT_POST = {"/users", "/auth/token","/auth/introspect", "/roles"};
     private static final String[] PUBLIC_ENTRYPOINT_GET = {"/categories", "/products", "/static/**"};
 
     private final CustomJWTDecode customJWTDecode;
