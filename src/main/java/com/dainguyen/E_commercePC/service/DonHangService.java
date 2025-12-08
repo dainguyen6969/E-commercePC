@@ -1,6 +1,7 @@
 package com.dainguyen.E_commercePC.service;
 
 import com.dainguyen.E_commercePC.dto.request.OrderCreationRequest;
+import com.dainguyen.E_commercePC.dto.response.OrderDetailResponse;
 import com.dainguyen.E_commercePC.dto.response.OrderResponse;
 import com.dainguyen.E_commercePC.entity.cart.ChiTietGioHang;
 import com.dainguyen.E_commercePC.entity.cart.GioHang;
@@ -11,10 +12,6 @@ import com.dainguyen.E_commercePC.exception.AppException;
 import com.dainguyen.E_commercePC.exception.ErrorCode;
 import com.dainguyen.E_commercePC.mapper.DonHangMapper;
 import com.dainguyen.E_commercePC.repository.*;
-import com.dainguyen.E_commercePC.repository.ChiTietDonHangRepository;
-import com.dainguyen.E_commercePC.repository.ChiTietGioHangRepository;
-import com.dainguyen.E_commercePC.repository.DonHangRepository;
-import com.dainguyen.E_commercePC.repository.GioHangRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,14 +27,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DonHangService {
-    DonHangRepository donHangRepository;
-    ChiTietDonHangRepository chiTietDonHangRepository;
-    GioHangRepository gioHangRepository;
-    ChiTietGioHangRepository chiTietGioHangRepository;
-    UserRepository userRepository;
-    DonHangMapper donHangMapper;
+    final DonHangRepository donHangRepository;
+    final ChiTietDonHangRepository chiTietDonHangRepository;
+    final GioHangRepository gioHangRepository;
+    final ChiTietGioHangRepository chiTietGioHangRepository;
+    final UserRepository userRepository;
+    final DonHangMapper donHangMapper;
 
-    // Hàm giả định để lấy User ID từ Security Context
     private Integer getCurrentUserId() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsername(username)
@@ -53,45 +48,42 @@ public class DonHangService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         GioHang gioHang = gioHangRepository.findByUserId(userId)
-                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY)); // Giỏ hàng không tồn tại
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
 
         List<ChiTietGioHang> cartItems = chiTietGioHangRepository.findAllByGioHang_Id(gioHang.getId());
 
         if (cartItems.isEmpty()) {
-            throw new AppException(ErrorCode.INVALID_KEY); // Giỏ hàng trống
+            throw new AppException(ErrorCode.INVALID_KEY);
         }
 
-        // 1. Tính toán tổng tiền
         double tongTien = cartItems.stream()
                 .mapToDouble(item -> item.getGia() * item.getSoLuong())
                 .sum();
 
-        // 2. Tạo đối tượng DonHang
         DonHang donHang = DonHang.builder()
                 .user(user)
                 .tongTien(tongTien)
-                .status("PENDING") // Trạng thái ban đầu
+                .status("PENDING")
                 .createdAt(LocalDateTime.now())
-                // Các trường khác như địa chỉ nhận hàng có thể được thêm vào DonHang Entity
+                .diaChiNhanHang(request.getDiaChiNhanHang())
+                .phuongThucThanhToan(request.getPhuongThucThanhToan())
                 .build();
 
         donHang = donHangRepository.save(donHang);
 
-        // 3. Chuyển ChiTietGioHang thành ChiTietDonHang và trừ kho (Giả định)
         for (ChiTietGioHang cartItem : cartItems) {
             ChiTietDonHang chiTietDonHang = ChiTietDonHang.builder()
                     .donHang(donHang)
-                    .sanPhamId(cartItem.getSanPham())
+                    .sanPham(cartItem.getSanPham())
                     .soLuong(cartItem.getSoLuong())
                     .gia(cartItem.getGia())
                     .build();
 
-            // Cần trừ số lượng tồn kho của SanPham ở đây (Logic Trừ kho cần được thêm vào)
+            // Logic Trừ kho (Cần thêm)
 
             chiTietDonHangRepository.save(chiTietDonHang);
         }
 
-        // 4. Xóa các mặt hàng trong giỏ hàng (Không xóa GioHang Entity)
         chiTietGioHangRepository.deleteAll(cartItems);
 
         return donHangMapper.toOrderResponse(donHang);
@@ -104,5 +96,23 @@ public class DonHangService {
         return donHangs.stream()
                 .map(donHangMapper::toOrderResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public OrderDetailResponse getOrderDetail(Integer orderId) {
+        Integer userId = getCurrentUserId();
+
+        // 1. Tìm đơn hàng
+        DonHang donHang = donHangRepository.findById(orderId)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
+
+        // 2. Kiểm tra quyền sở hữu
+        if (donHang.getUser() == null || !donHang.getUser().getId().equals(userId)) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
+
+        // 3. Ánh xạ sang OrderDetailResponse. MapStruct sẽ tự động dùng toOrderItemResponse
+        // để xử lý danh sách item lồng bên trong.
+        return donHangMapper.toOrderDetailResponse(donHang);
     }
 }

@@ -1,0 +1,21 @@
+package com.dainguyen.E_commercePC.dto.response;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class OrderItemResponse {
+    Integer chiTietDonHangId;
+
+    Integer sanPhamId;
+    String tenSanPham;
+    String anhSanPham;
+
+    Integer soLuong;
+    Double giaMua;
+    Double thanhTien; // soLuong * giaMua
+}

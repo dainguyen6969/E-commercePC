@@ -3,7 +3,8 @@ package com.dainguyen.E_commercePC.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -14,5 +15,5 @@ public class DiaChiResponse {
     String xaPhuong;
     String diaChiHienTai;
     String phone;
-    // Không cần thông tin User ở đây
+
 }

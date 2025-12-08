@@ -3,7 +3,8 @@ package com.dainguyen.E_commercePC.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

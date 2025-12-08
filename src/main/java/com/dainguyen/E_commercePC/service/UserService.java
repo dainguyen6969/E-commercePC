@@ -16,7 +16,7 @@ import com.dainguyen.E_commercePC.dto.request.UserCreationRequest;
 import com.dainguyen.E_commercePC.dto.request.UserUpdateRequest;
 import com.dainguyen.E_commercePC.dto.request.DiaChiRequest;
 import com.dainguyen.E_commercePC.dto.response.UserResponse;
-import com.dainguyen.E_commercePC.dto.response.DiaChiResponse;
+import com.dainguyen.E_commercePC.dto.response.DiaChiResponse; // Import DTO Địa chỉ
 import com.dainguyen.E_commercePC.entity.user.Role;
 import com.dainguyen.E_commercePC.entity.user.User;
 import com.dainguyen.E_commercePC.entity.user.DiaChi;
@@ -97,6 +97,7 @@ public class UserService {
         User managedUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
+        // CHẮC CHẮN RẰNG MAPPER CÓ TRƯỜNG PHONE SAU KHI SỬA User.java
         userMapper.updateUser(managedUser, request);
         managedUser.setUpdatedAt(LocalDateTime.now());
         userRepository.save(managedUser);
@@ -116,6 +117,7 @@ public class UserService {
 
         DiaChi diaChi = diaChiMapper.toDiaChi(request);
         diaChi.setUser(user);
+        diaChi.setPhone(request.getPhone());
 
         diaChiRepository.save(diaChi);
 
@@ -149,10 +151,12 @@ public class UserService {
     }
 
     // Lấy địa chỉ của User hiện tại
+    @Transactional
     public List<DiaChiResponse> getMyAddresses() {
         User user = getCurrentUserEntity();
-        Set<DiaChi> diaChis = diaChiRepository.findByUser_Id(user.getId());
 
+        List<DiaChi> diaChis = diaChiRepository.findByUser_Id(user.getId());
+        diaChis.forEach(d -> System.out.println(">>> PHONE DB = " + d.getPhone()));
         return diaChis.stream()
                 .map(diaChiMapper::toDiaChiResponse)
                 .collect(Collectors.toList());
@@ -160,7 +164,7 @@ public class UserService {
 
     // Lấy tất cả địa chỉ của một User cụ thể (cho Admin)
     public List<DiaChiResponse> getAllAddressesByUserId(Integer userId) {
-        Set<DiaChi> diaChis = diaChiRepository.findByUser_Id(userId);
+        List<DiaChi> diaChis = diaChiRepository.findByUser_Id(userId);
 
         return diaChis.stream()
                 .map(diaChiMapper::toDiaChiResponse)

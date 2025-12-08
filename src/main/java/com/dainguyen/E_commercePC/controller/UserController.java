@@ -44,6 +44,7 @@ public class UserController {
     // *** ENDPOINT HỒ SƠ CÁ NHÂN ***
 
     // GET /users/my-profile
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/my-profile")
     public ApiResponse<UserResponse> getMyProfile() {
         return ApiResponse.<UserResponse>builder()
@@ -52,6 +53,7 @@ public class UserController {
     }
 
     // PUT /users/my-profile
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PutMapping("/my-profile")
     public ApiResponse<UserResponse> updateMyProfile(@RequestBody UserUpdateRequest request) {
         return ApiResponse.<UserResponse>builder()
@@ -62,6 +64,7 @@ public class UserController {
     // *** ENDPOINTS QUẢN LÝ ĐỊA CHỈ ***
 
     // GET /users/addresses: Lấy tất cả địa chỉ của User hiện tại
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/addresses")
     public ApiResponse<List<DiaChiResponse>> getMyAddresses() {
         return ApiResponse.<List<DiaChiResponse>>builder()
@@ -70,6 +73,7 @@ public class UserController {
     }
 
     // POST /users/addresses (Thêm địa chỉ cho User hiện tại)
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/addresses")
     public ApiResponse<UserResponse> addAddress(@RequestBody DiaChiRequest request) {
         return ApiResponse.<UserResponse>builder()

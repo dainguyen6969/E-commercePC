@@ -24,6 +24,6 @@ public interface UserMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "gioHang", ignore = true)
     @Mapping(target = "donHangs", ignore = true)
-    @Mapping(target = "diaChi", ignore = true) // Địa chỉ được quản lý riêng biệt
+    @Mapping(target = "diaChi", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

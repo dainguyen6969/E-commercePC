@@ -6,12 +6,14 @@ import java.util.Set;
 import com.dainguyen.E_commercePC.entity.cart.GioHang;
 import com.dainguyen.E_commercePC.entity.order.ChiTietDonHang;
 import com.dainguyen.E_commercePC.entity.order.DonHang;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -27,6 +29,7 @@ public class User {
     String email;
     String fullName;
     Boolean status;
+    String phone;
 
     @Column(name = "created_at")
     LocalDateTime createdAt;
@@ -34,7 +37,9 @@ public class User {
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ToString.Exclude
     Set<DiaChi> diaChi;
 
     @ManyToMany

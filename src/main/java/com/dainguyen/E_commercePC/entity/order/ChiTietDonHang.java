@@ -25,7 +25,7 @@ public class ChiTietDonHang {
     @JoinColumn(name = "don_hang_id", referencedColumnName = "id")
     DonHang donHang;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "san_pham_id", referencedColumnName = "id")
-    SanPham sanPhamId;
+    SanPham sanPham;
 }

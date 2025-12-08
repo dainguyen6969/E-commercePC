@@ -2,6 +2,7 @@ package com.dainguyen.E_commercePC.controller;
 
 import com.dainguyen.E_commercePC.dto.request.OrderCreationRequest;
 import com.dainguyen.E_commercePC.dto.response.ApiResponse;
+import com.dainguyen.E_commercePC.dto.response.OrderDetailResponse;
 import com.dainguyen.E_commercePC.dto.response.OrderResponse;
 import com.dainguyen.E_commercePC.service.DonHangService;
 import lombok.AccessLevel;
@@ -32,6 +33,13 @@ public class OrderController {
     public ApiResponse<List<OrderResponse>> getOrderHistory() {
         return ApiResponse.<List<OrderResponse>>builder()
                 .result(donHangService.getUserOrders())
+                .build();
+    }
+
+    @GetMapping("/{orderId}")
+    public ApiResponse<OrderDetailResponse> getOrderDetail(@PathVariable Integer orderId) {
+        return ApiResponse.<OrderDetailResponse>builder()
+                .result(donHangService.getOrderDetail(orderId))
                 .build();
     }
 }
